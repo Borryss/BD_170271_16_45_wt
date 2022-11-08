@@ -1,0 +1,6 @@
+CREATE TABLE Postac(id_postaci int NOT NULL PRIMARY KEY ,nazwa varchar(40),date_ur date,wiek int unsigned,rodzaj enum('wiking', 'ptak', 'kobieta'));
+
+INSERT INTO Postac(id_postaci,nazwa,date_ur,wiek,rodzaj)VALUES(1,'Bjorn','1934-12-10',67,'ptak');
+INSERT INTO Postac(id_postaci,nazwa,date_ur,wiek,rodzaj)VALUES(2,'Drozd','1934-12-10',58,'ptak');
+INSERT INTO Postac(id_postaci,nazwa,date_ur,wiek,rodzaj)VALUES(3,'Tesciowa','1934-12-10',88,'kobieta');
+UPDATE Postac SET wiek = '88' WHERE id_postaci = 3
