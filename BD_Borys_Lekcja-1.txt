@@ -1,0 +1,39 @@
+Zadanie 1
+CREATE TABLE Postac(id_postaci int NOT NULL PRIMARY KEY ,nazwa varchar(40),date_ur date,wiek int unsigned,rodzaj enum('wiking', 'ptak', 'kobieta'));
+INSERT INTO Postac(id_postaci,nazwa,date_ur,wiek,rodzaj)VALUES(1,'Bjorn','1934-12-10',67,'ptak');
+INSERT INTO Postac(id_postaci,nazwa,date_ur,wiek,rodzaj)VALUES(2,'Drozd','1934-12-10',58,'ptak');
+INSERT INTO Postac(id_postaci,nazwa,date_ur,wiek,rodzaj)VALUES(3,'Tesciowa','1934-12-10',88,'kobieta');
+UPDATE Postac SET wiek = '88' WHERE id_postaci = 3
+
+Zadanie 2
+CREATE TABLE walizka (id_walizki int NOT NULL PRIMARY KEY, pojemnosc int unsigned, kolor enum('rozowy', 'czerwony', 'teczowy', 'zolty'), id_wlasciciela int, FOREIGN KEY (id_wlasciciela) REFERENCES Postac(id_postaci) ON DELETE CASCADE);
+ALTER TABLE walizka ALTER kolor SET DEFAULT 'rozowy';
+INSERT INTO walizka(id_walizki,pojemnosc,kolor,id_wlasciciela)VALUES(1,5,'czerwony',1);
+INSERT INTO walizka(id_walizki,pojemnosc,kolor,id_wlasciciela)VALUES(2,8,'rozowy',3);
+
+Zadanie 3
+CREATE TABLE izba(adres_budynku varchar(40) NOT NULL, nazwa_izby varchar(40) NOT NULL, metraz int unsigned, wlasciciel int, FOREIGN KEY(wlasciciel) REFERENCES Postac(id_postaci) ON DELETE SET NULL, PRIMARY KEY(adres_budynku, nazwa_izby));
+ALTER TABLE izba ADD COLUMN kolor varchar(30) DEFAULT 'czarny' AFTER metraz;
+INSERT INTO izba (adres_budynku, nazwa_izby, metraz, wlasciciel) VALUES ('zamalna 6', 'spizarnia', 19, 1);
+
+Zadanie 4
+CREATE TABLE przetwory(id_przetworu int NOT NULL, PRIMARY KEY(id_przetworu), rok_produkcji int unsigned DEFAULT 1654, id_wykonawcy int, FOREIGN KEY(id_wykonawcy) REFERENCES Postac(id_postaci), zawartosc char(30), dodatek char(30) DEFAULT 'papryczka chilli', id_konsumenta int, FOREIGN KEY(id_konsumenta) REFERENCES Postac(id_postaci));
+INSERT INTO przetwory VALUES(1, 2008, 1, '14zl', 'bigos', 1);
+INSERT INTO przetwory VALUES(2, 1994, 1, '37zl', 'papryczka chilli', 1);
+
+Zadanie 5
+INSERT INTO Postac(id_postaci, nazwa, rodzaj, date_ur, wiek)VALUES(4, 'Joe', 'wiking', '1976-07-20', 46);
+INSERT INTO Postac(id_postaci, nazwa, rodzaj, date_ur, wiek)VALUES(5, 'Robert', 'wiking', '1960-01-14', 62);
+INSERT INTO Postac(id_postaci, nazwa, rodzaj, date_ur, wiek)VALUES(6, 'Oliver', 'wiking', '1985-08-12', 37);
+INSERT INTO Postac(id_postaci, nazwa, rodzaj, date_ur, wiek)VALUES(7, 'James', 'wiking', '1973-06-09', 49);
+INSERT INTO Postac(id_postaci, nazwa, rodzaj, date_ur, wiek)VALUES(8, 'John', 'wiking', '1994-11-03', 28);
+CREATE TABLE statek(nazwa_statku varchar(25), PRIMARY KEY(nazwa_statku), rodzaj_statku enum('wielki', 'sredni', 'maly'), data_wodowania date, max_ladownosc int unsigned);
+INSERT INTO statek VALUES('hope', 'wielki', '2003-06-12', 38), ('wind', 'sredni', '2014-02-07', 16);
+ALTER TABLE Postac ADD COLUMN funkcja varchar(30);
+UPDATE Postac SET funkcja = 'kapitan' WHERE nazwa = 'Bjorn';
+ALTER TABLE Postac ADD COLUMN id_statku varchar(30);
+ALTER TABLE Postac ADD FOREIGN KEY(id_statku) REFERENCES statek(nazwa_statku);
+UPDATE Postac SET id_statku = 'hope' WHERE id_postaci = 1 OR id_postaci = 2 OR id_postaci = 7 OR id_postaci = 8;
+UPDATE Postac SET id_statku = 'wind' WHERE id_postaci = 4 OR id_postaci = 5 OR id_postaci = 6;
+DELETE FROM izba WHERE nazwa_izby = 'spizarnia';
+DROP TABLE izba;
