@@ -1,0 +1,22 @@
+Zadanie1
+
+DELETE FROM Postac WHERE rodzaj = 'wiking' and nazwa != 'Bjorn' ORDER BY wiek DESC LIMIT 2;
+ALTER TABLE walizka DROP FOREIGN KEY walizka_ibfk_1;
+ALTER TABLE przetwory DROP FOREIGN KEY przetwory_ibfk_1;
+ALTER TABLE przetwory DROP FOREIGN KEY przetwory_ibfk_2;
+ALTER TABLE Postac DROP PRIMARY KEY;
+
+Zadanie2
+
+ALTER TABLE Postac ADD COLUMN pesel char(11) NOT NULL FIRST;
+UPDATE Postac SET pesel = '12456434567' WHERE nazwa = 'Bjorn';
+UPDATE Postac SET pesel = '12456434524' WHERE nazwa = 'Tesciowa';
+UPDATE Postac SET pesel = '12456464566' WHERE nazwa = 'Joe';
+UPDATE Postac SET pesel = '12456434565' WHERE nazwa = 'Oliver';
+UPDATE Postac SET pesel = '12456437897' WHERE nazwa = 'James';
+UPDATE Postac SET pesel = '12454564647' WHERE nazwa = 'John';
+ALTER TABLE Postac ADD PRIMARY KEY(pesel); 
+ALTER TABLE Postac MODIFY rodzaj enum('wiking', 'ptak', 'kobieta', 'syrena');
+INSERT INTO Postac(pesel,id_postaci,nazwa,date_ur,wiek,rodzaj)VALUES('83464752846', 9, 'Gertruda Nieszczera','1992-02-07', 30,'syrena');
+
+Zadanie3
