@@ -1,0 +1,39 @@
+Zadanie1
+DELETE FROM Postac WHERE rodzaj = 'wiking' and nazwa != 'Bjorn' ORDER BY wiek DESC LIMIT 2;
+ALTER TABLE walizka DROP FOREIGN KEY walizka_ibfk_1;
+ALTER TABLE przetwory DROP FOREIGN KEY przetwory_ibfk_1;
+ALTER TABLE przetwory DROP FOREIGN KEY przetwory_ibfk_2;
+ALTER TABLE Postac DROP PRIMARY KEY;
+
+Zadanie2
+
+ALTER TABLE Postac ADD COLUMN pesel char(11) NOT NULL FIRST;
+UPDATE Postac SET pesel = '12456434567' WHERE nazwa = 'Bjorn';
+UPDATE Postac SET pesel = '12456434524' WHERE nazwa = 'Tesciowa';
+UPDATE Postac SET pesel = '12456464566' WHERE nazwa = 'Joe';
+UPDATE Postac SET pesel = '12456434565' WHERE nazwa = 'Oliver';
+UPDATE Postac SET pesel = '12456437897' WHERE nazwa = 'James';
+UPDATE Postac SET pesel = '12454564647' WHERE nazwa = 'John';
+ALTER TABLE Postac ADD PRIMARY KEY(pesel); 
+ALTER TABLE Postac MODIFY rodzaj enum('wiking', 'ptak', 'kobieta', 'syrena');
+INSERT INTO Postac(pesel,id_postaci,nazwa,date_ur,wiek,rodzaj)VALUES('83464752846', 9, 'Gertruda Nieszczera','1992-02-07', 30,'syrena');
+
+Zadanie3
+UPDATE Postac SET id_statku = 'hope' WHERE rodzaj = 'wiking' and nazwa LIKE '%a%';
+UPDATE statek SET max_ladownosc = max_ladownosc * 0.7 WHERE data_wodowania LIKE '19%%-%%-%%';
+ALTER TABLE Postac ADD CHECK (wiek<1000);
+
+Zadanie4
+INSERT INTO Postac(pesel,id_postaci, nazwa, rodzaj, date_ur, wiek)VALUES(65826495785,10, 'Loko', 'wez', '1987-11-03', 35);
+CREATE TABLE Marynarz LIKE Postac;
+INSERT INTO Marynarz SELECT*FROM Postac WHERE id_statku IS NOT NULL;
+SHOW CREATE TABLE Marynarz;
+ 
+
+Zadanie5
+UPDATE Postac SET id_statku = NULL WHERE id_statku IS NOT NULL;
+DELETE FROM Postac WHERE id_postaci=7;
+ALTER TABLE Postac DROP FOREIGN KEY Postac_ibfk_1;
+DROP TABLE statek;
+CREATE TABLE zwierz(id_zwierz int AUTO_INCREMENT PRIMARY KEY, nazwa varchar(40), wiek int unsigned);
+INSERT INTO zwierz (id_zwierz, nazwa,wiek)SELECT id_postaci, nazwa, wiek FROM Postac WHERE rodzaj = 'wez' OR rodzaj = 'ptak';
