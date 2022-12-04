@@ -1,0 +1,12 @@
+ZD1
+SELECT AVG(waga) FROM kreatura WHERE rodzaj = 'wiking';
+SELECT AVG(waga), rodzaj,  COUNT(rodzaj) AS ilosc FROM kreatura GROUP BY rodzaj;
+SELECT AVG(1740-YEAR(dataUr)), rodzaj,  COUNT(rodzaj) AS ilosc FROM kreatura GROUP BY rodzaj;
+
+ZD2
+SELECT SUM(waga), rodzaj FROM zasob WHERE rodzaj IS NOT NULL GROUP BY rodzaj;
+SELECT AVG(waga), nazwa FROM zasob WHERE ilosc >=4 GROUP BY nazwa HAVING SUM(waga) > 10;
+SELECT rodzaj,  COUNT(distinct(nazwa)) AS ilosc FROM zasob GROUP BY rodzaj HAVING SUM(ilosc) > 1;
+
+ZD3
+SELECT distinct idKreatury, SUM(ilosc) FROM ekwipunek GROUP BY idKreatury;
