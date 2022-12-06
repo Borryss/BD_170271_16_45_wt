@@ -1,0 +1,27 @@
+
+ZD1
+SELECT AVG(waga) FROM kreatura WHERE rodzaj = 'wiking';
+SELECT AVG(waga), rodzaj,  COUNT(rodzaj) AS ilosc FROM kreatura GROUP BY rodzaj;
+SELECT AVG(1740-YEAR(dataUr)), rodzaj,  COUNT(rodzaj) AS ilosc FROM kreatura GROUP BY rodzaj;
+
+ZD2
+SELECT SUM(waga), rodzaj FROM zasob WHERE rodzaj IS NOT NULL GROUP BY rodzaj;
+SELECT AVG(waga), nazwa FROM zasob WHERE ilosc >=4 GROUP BY nazwa HAVING SUM(waga) > 10;
+SELECT rodzaj,  COUNT(distinct(nazwa)) AS ilosc FROM zasob GROUP BY rodzaj HAVING SUM(ilosc) > 1;
+
+ZD3
+SELECT kreatura.idKreatury, kreatura.nazwa, SUM(ekwipunek.ilosc) FROM kreatura LEFT JOIN ekwipunek ON kreatura.idKreatury = ekwipunek.idKreatury GROUP BY kreatura.idKreatury;
+SELECT kreatura.idKreatury, kreatura.nazwa, zasob.nazwa FROM kreatura LEFT JOIN ekwipunek ON kreatura.idKreatury = ekwipunek.idKreatury LEFT JOIN zasob ON zasob.idZasobu = ekwipunek.idZasobu GROUP BY kreatura.idKreatury;
+SELECT kreatura.idKreatury, kreatura.nazwa FROM kreatura  LEFT JOIN ekwipunek ON kreatura.idKreatury = ekwipunek.idKreatury WHERE ekwipunek.ilosc IS NULL GROUP BY kreatura.idKreatury;
+ 
+ZD4
+SELECT kreatura.nazwa, zasob.nazwa FROM kreatura LEFT JOIN ekwipunek ON kreatura.idKreatury = ekwipunek.idKreatury LEFT JOIN zasob ON zasob.idZasobu = ekwipunek.idZasobu WHERE kreatura.dataUr BETWEEN '1670-01-01' and '1679-12-30'  and kreatura.rodzaj = 'wiking';
+SELECT kreatura.nazwa, zasob.nazwa FROM kreatura LEFT JOIN ekwipunek ON kreatura.idKreatury = ekwipunek.idKreatury LEFT JOIN zasob ON zasob.idZasobu = ekwipunek.idZasobu WHERE zasob.rodzaj = 'jedzenie' ORDER BY dataUr DESC LIMIT 5;
+SELECT kreatura.nazwa, podkreatura.nazwa FROM kreatura JOIN kreatura podkreatura ON kreatura.idKreatury + 5 = podkreatura.idKreatury;
+
+ZD5
+SELECT kreatura.rodzaj, AVG(ekwipunek.ilosc*zasob.waga) FROM kreatura LEFT JOIN ekwipunek ON kreatura.idKreatury = ekwipunek.idKreatury LEFT JOIN zasob ON zasob.idZasobu = ekwipunek.idZasobu WHERE kreatura.rodzaj != 'waz' and kreatura.rodzaj != 'malpa' and ekwipunek.ilosc < 30;
+SELECT kreatura.rodzaj, kreatura.nazwa, kreatura.dataUr FROM kreatura WHERE dataUr IN (SELECT MIN(dataUr) AS min FROM kreatura GROUP BY rodzaj) OR dataUr IN (SELECT MAX(dataUr) AS max FROM kreatura GROUP BY rodzaj) ORDER BY rodzaj;
+
+
+
