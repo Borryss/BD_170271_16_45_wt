@@ -7,7 +7,7 @@ SELECT AVG(1740-YEAR(dataUr)), rodzaj,  COUNT(rodzaj) AS ilosc FROM kreatura GRO
 ZD2
 SELECT SUM(waga), rodzaj FROM zasob WHERE rodzaj IS NOT NULL GROUP BY rodzaj;
 SELECT AVG(waga), nazwa FROM zasob WHERE ilosc >=4 GROUP BY nazwa HAVING SUM(waga) > 10;
-SELECT rodzaj,  COUNT(distinct(nazwa)) AS ilosc FROM zasob GROUP BY rodzaj HAVING SUM(ilosc) > 1;
+SELECT rodzaj,  COUNT(distinct(nazwa)) AS ilosc FROM zasob WHERE ilosc > 1 GROUP BY rodzaj;
 
 ZD3
 SELECT kreatura.idKreatury, kreatura.nazwa, SUM(ekwipunek.ilosc) FROM kreatura LEFT JOIN ekwipunek ON kreatura.idKreatury = ekwipunek.idKreatury GROUP BY kreatura.idKreatury;
