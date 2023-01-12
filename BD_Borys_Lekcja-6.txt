@@ -1,0 +1,36 @@
+Zd1
+DELIMITER $ 
+
+CREATE TRIGGER kreatura_tr BEFORE INSERT OR UPDATE ON kreatura FOR EACH ROW BEGIN IF waga<=0 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Waga nie jest wieksza od zera'; END IF; END$
+
+Zd2
+CREATE TABLE archiwium_wypraw(id_wyprawy int NOT NULL PRIMARY KEY, nazwa varchar(30), data_rozpoczecia date, data_zakonczenia date, kierownik varchar(30))$
+
+CREATE TRIGGER wyprawa_tr AFTER DELETE ON wyprawa FOR EACH ROW BEGIN INSERT INTO archiwium_wypraw VALUES(old.id_wyprawy, old.nazwa, old.data_rozpoczecia, old.data_zakonczenia,(SELECT nazwa FROM kreatura WHERE kreatura.idKreatury = old.kierownik)); END$
+
+Zd3
+CREATE PROCEDURE eliksir_sily(IN id INT) BEGIN UPDATE kreatura SET udzwig = udzwig * 1.2 WHERE id_kreatury=id; END $
+
+CREATE FUNCTION fun1(text VARCHAR(100)) RETURNS VARCHAR(100) DETERMINISTIC RETURN UPPER(text); END$
+
+Zd4
+
+CREATE TABLE system_alarmowy(id_alarmu int NOT NULL AUTO_INCREMENT PRIMARY KEY, wiadomosc varchar(50))$
+
+CREATE TRIGGER alarm AFTER INSERT ON wyprawa FOR EACH ROW BEGIN IF 'Tesciowa' IN (SELECT kreatura.nazwa FROM kreatura WHERE kreatura.idKreatury IN (SELECT uczestnicy.id_uczestnika FROM uczestnicy WHERE id_wyprawy = NEW.id_wyprawy GROUP BY uczestnicy.id_uczestnika) GROUP BY kreatura.nazwa) AND 'Chatka dziadka' IN (SELECT sektor.nazwa FROM sektor WHERE sektor.id_sektora IN (SELECT etapy_wyprawy.sektor FROM etapy_wyprawy WHERE idWyprawy = NEW.id_wyprawy GROUP BY etapy_wyprawy.sektor) GROUP BY sektor.nazwa) THEN INSERT INTO system_alarmowy(wiadomosc)VALUES('Tesciowa nadchodzi !!!'); END IF; END$   
+
+Zd5
+
+CREATE PROCEDURE proced_avgsummax_kreatura() BEGIN SELECT AVG(kreatura.udzwig) AS AVG_udzwig, SUM(kreatura.udzwig) AS SUM_udzwig, MAX(kreatura.udzwig) AS MAX_udzwig  FROM kreatura; END$                
+
+CREATE PROCEDURE proced_sektor_z_wyprawy(IN id_w INT) BEGIN SELECT CONCAT(sektor.wspolrzedna_x, wspolrzedna_y) AS sector, sektor.nazwa FROM etapy_wyprawy LEFT JOIN sektor ON etapy_wyprawy.sektor = sektor.id_sektora WHERE idWyprawy = id_w ORDER BY sektor.nazwa ASC; END$                  
+
+DELIMITER ;
+
+
+
+
+
+
+
+
